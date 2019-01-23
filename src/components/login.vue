@@ -1,28 +1,29 @@
 <template>
   <div class="Login">
-    <h3 v-if="!login">欢迎登陆！</h3>
-    <h3 v-else>请填写一下信息！</h3>
-    <Form ref="formCustom" :model="formCustom" :rules="ruleValidate" :label-width="80">
-      <FormItem label="用户名:" prop="user">
-        <i-input type="text" v-model.trim="formCustom.user" ></i-input>
-      </FormItem>
-      <FormItem label="密码:" prop="passwd">
-        <i-input type="password" v-model.trim="formCustom.passwd" :maxlength="16"></i-input>
-      </FormItem>
-      <FormItem label="确认密码:" prop="passwdCheck" v-show="login">
-        <Input type="password" v-model.trim="formCustom.passwdCheck" :maxlength="16"></Input>
-      </FormItem>
-      <FormItem v-if="login">
-        <Button type="primary" @click="sure('formCustom')">确定</Button>
-        <Button @click="handleReset('formCustom')" style="margin-left: 8px">取消</Button>
-      </FormItem>
-      <FormItem v-else>
-        <Button type="primary" @click="handleSubmit('formCustom')">登陆</Button>
-        <Button @click="register('formCustom')" style="margin-left: 8px">注册</Button>
-      </FormItem>
-    </Form>
+    <div class="login_form">
+      <h3 v-if="!login">欢迎登陆！</h3>
+      <h3 v-else>请填写一下信息！</h3>
+      <Form ref="formCustom" :model="formCustom" :rules="ruleValidate" :label-width="80">
+        <FormItem label="用户名:" prop="user">
+          <i-input type="text" v-model.trim="formCustom.user" ></i-input>
+        </FormItem>
+        <FormItem label="密码:" prop="passwd">
+          <i-input type="password" v-model.trim="formCustom.passwd" :maxlength="16"></i-input>
+        </FormItem>
+        <FormItem label="确认密码:" prop="passwdCheck" v-show="login">
+          <Input type="password" v-model.trim="formCustom.passwdCheck" :maxlength="16"></Input>
+        </FormItem>
+        <FormItem v-if="login" class="login_btn">
+          <Button type="primary" @click="sure('formCustom')">确定</Button>
+          <Button @click="handleReset('formCustom')" style="margin-left: 8px">取消</Button>
+        </FormItem>
+        <FormItem v-else class="login_btn">
+          <Button type="primary" @click="handleSubmit('formCustom')">登陆</Button>
+          <Button @click="register('formCustom')" style="margin-left: 8px">注册</Button>
+        </FormItem>
+      </Form>
+    </div>
   </div>
-
 </template>
 <script>
   export default {
@@ -69,7 +70,7 @@
             if(this.formCustom.user!==''||this.formCustom.passwd!==''){
               this.$router.push({name:'Home'});
             }
-            
+            sessionStorage.user = this.formCustom.user;
           }
         })
       },
@@ -96,12 +97,42 @@
     }
   }
 </script>
-<style>
+<style lang="less" scoped>
   .Login{
-    width:20%;
-    margin:0 auto;
+    background-image: url('../assets/big_msg.jpg');
+    background-size:cover;
+    background-repeat:no-repeat;
+    background-attachment:fixed;
+    background-position: center;
+    width:100%;
+    height:100%;
+    position:relative;
+    .login_form{
+      width:400px;
+      height:300px;
+      background:#fff;
+      border-radius:5px;
+      position:absolute;
+      right:10%;
+      bottom:20%;
+      padding:20px;
+      padding-right:30px;
+      h3{
+        margin-bottom:20px;
+        text-align:center;
+      }
+      .login_btn{
+        text-align:center;
+      }
+    }
+
   }
-  h3{
-    margin-bottom:20px;
+
+  @media(max-width:420px){
+    .login_form{
+      width:100%;
+      position:absolute;
+      right:0;
+    }
   }
 </style>
